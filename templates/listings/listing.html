@@ -31,7 +31,8 @@
     </nav>
   </div>
 </section>
-
+<!-- Alert -->
+{% include 'partials/_alerts.html' %}
 <section id="listing" class="py-4">
   <div class="container">
     <a href="{% url 'listings' %}" class="btn btn-light mb-4">Back To Listings</a>
@@ -60,7 +61,6 @@
           </div>
           {% endif %}
           {% if listing.photo_2 %}
-          e
           <div class="col-md-2">
             <a
               href="{{ listing.photo_2.url }}"
