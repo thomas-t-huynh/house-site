@@ -36,7 +36,7 @@ def register(request):
                     # return redirect('index')
 
                     user.save()
-                    messages.succes(request, 'You are now register and can now log in')
+                    messages.success(request, 'You are now register and can now log in')
                     return redirect('login')
         else:
             messages.error(request, 'Passwords do not match')
@@ -53,7 +53,7 @@ def login(request):
 
         if user is not None:
             auth.login(request, user)
-            message.success(request, 'You are now logged in')
+            messages.success(request, 'You are now logged in')
             return redirect('dashboard')
         else:
             messages.error(request, 'Invalid credentials')
