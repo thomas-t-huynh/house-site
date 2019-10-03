@@ -94,10 +94,11 @@
   </div>
 </section>
 
-<input type="text" id="search_bar">
-<button id="search">Search</button>
-<div id="map">
-  
+<div class="container">
+  <input type="text" id="search_bar">
+  <button id="search">Search</button>
+  <div id="map">
+  </div>
 </div>
 <!-- Breadcrumb -->
 <section id="bc" class="mt-3">
@@ -194,7 +195,7 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfV
           start_pos =  results[0].geometry.location
           map = new google.maps.Map(document.getElementById('map'), {
             center: start_pos,
-            zoom: 7,
+            zoom: 9,
             mapTypeControl: false
           });
 
@@ -220,8 +221,14 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfV
             if (status === 'OK') {
               var marker = new google.maps.Marker({
                 map: map,
-                position: results[0].geometry.location
+                position: results[0].geometry.location,
+                icon: {
+                  url: 'https://img.icons8.com/color/13/000000/filled-circle.png',
+                  labelOrigin: new google.maps.Point(7,20)
+                },
+                label: "{{ listing.price }}",
               });
+              
             } else {
               alert('Geocode was not successful for the following reason: ' + status);
             }
