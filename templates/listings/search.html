@@ -93,7 +93,6 @@
     </div>
   </div>
 </section>
-
 <div class="container">
   <input type="text" id="search_bar">
   <button id="search">Search</button>
@@ -205,6 +204,7 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfV
               stylers: [{
                 visibility: 'off'
               }]
+              
             }]
           };
         
@@ -219,14 +219,19 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfV
             'address': address
           }, function(results, status) {
             if (status === 'OK') {
+
+              var k_price = "{{ listing.price }}";
+
+              k_price = String(Math.floor(parseInt(k_price) / 1000))
+        
               var marker = new google.maps.Marker({
                 map: map,
                 position: results[0].geometry.location,
                 icon: {
                   url: 'https://img.icons8.com/color/13/000000/filled-circle.png',
-                  labelOrigin: new google.maps.Point(7,20)
+                  labelOrigin: new google.maps.Point(7,20),
                 },
-                label: "{{ listing.price }}",
+                label: `$${k_price}k`
               });
               
             } else {
