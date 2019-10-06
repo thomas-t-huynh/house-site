@@ -212,6 +212,15 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfV
             styles: styles['hide']
           });
 
+          /*var iconBox = {
+            path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
+            fillColor: 'green',
+            fillOpacity: 0.8,
+            scale: 1,
+            strokeColor: 'green',
+            strokeWeight: 14
+          }*/
+
           {% for listing in listings %}
           var address = "{{ listing.title }} {{ listing.city }}, {{ listing.state }} {{ listing.zipcode }}"
           
@@ -220,9 +229,23 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfV
           }, function(results, status) {
             if (status === 'OK') {
 
-              var k_price = "{{ listing.price }}";
+              let k_price = "{{ listing.price }}";
 
-              k_price = String(Math.floor(parseInt(k_price) / 1000))
+              k_price = String(Math.floor(parseInt(k_price) / 1000));
+              
+              let contentString = `
+                <img class="info-image" src="{{ listing.photo_main.url }}" />
+                <span class="info-text">
+             
+                    $${k_price}k<br>
+                    {{ listing.bedrooms }} bd, {{ listing.bathrooms }} br<br>
+                    {{ listing.sqft | intcomma }} sqft
+             
+                </span>`;
+
+              let infoWindow = new google.maps.InfoWindow({
+                content: contentString
+              });
         
               var marker = new google.maps.Marker({
                 map: map,
@@ -231,7 +254,19 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfV
                   url: 'https://img.icons8.com/color/13/000000/filled-circle.png',
                   labelOrigin: new google.maps.Point(7,20),
                 },
-                label: `$${k_price}k`
+                label: {
+                  text: `$${k_price}k`,
+                }
+              });
+              marker.addListener('mouseover', function() {
+                infoWindow.open(map, marker);
+                marker.addListener('mouseout', function() {
+                  infoWindow.close(map, marker);
+                });
+              });
+
+              marker.addListener('click', function() {
+                window.location.href = "{% url 'listing' listing.id %}"
               });
               
             } else {
