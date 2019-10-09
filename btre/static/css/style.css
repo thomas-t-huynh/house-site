@@ -1,18 +1,33 @@
+
 .btn-secondary {
-  color: #fff !important; }
+  color: #fff !important }
+
+.gm-style-iw > button {
+  display: none !important;
+}
+
+.house-feats {
+  font-size: 15px;
+  float: right;
+}
+
 
 img {
   width: 100%; }
 
 .info-image {
-  height: 50px;
-  width: 50px;
+  height: 60px;
+  width: 60px;
+  margin-right: 4px;
   float: left;
 }
 
 .info-text {
-  width: 150px;
+  width: 130px;
+
 }
+
+
 
 .logo {
   width: 80px; 
@@ -20,7 +35,8 @@ img {
 
 #map {
   height: 500px;
-  width: 100%;
+  width: 60%;
+  float: left;
 }
 
 .navbar {

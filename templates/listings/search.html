@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
 
-{% load humanize %}
+{% load humanize %} {% load static %}
 
 {% block title %} | Search Results {% endblock %}
 
 {% block content %}
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfVzPqo4nZs&callback=initMap">
+</script>
+
 <section id="showcase-inner" class="showcase-search text-white py-5">
   <div class="container">
     <div class="row text-center">
@@ -93,12 +97,7 @@
     </div>
   </div>
 </section>
-<div class="container">
-  <input type="text" id="search_bar">
-  <button id="search">Search</button>
-  <div id="map">
-  </div>
-</div>
+
 <!-- Breadcrumb -->
 <section id="bc" class="mt-3">
   <div class="container">
@@ -116,6 +115,11 @@
   </div>
 </section>
 
+<div class="container">
+  <div id="map">
+  </div>
+</div>
+
 <!-- Listings -->
 <section id="listings" class="py-4">
   <div class="container">
@@ -123,37 +127,15 @@
       <!-- Listing 1 -->
       {% if listings %}
         {% for listing in listings %}
-          <div class="col-md-6 col-lg-4 mb-4">
+          <div class="col-md-12 ">
             <div class="card listing-preview">
               <img class="card-img-top" src="{{ listing.photo_main.url }}" alt="">
-              <div class="card-img-overlay">
-                <h2>
-                  <span class="badge badge-secondary text-white">${{ listing.price | intcomma }}</span>
-                </h2>
-              </div>
               <div class="card-body">
-                <div class="listing-heading text-center">
-                  <h4 class="text-primary">{{ listing.title }}</h4>
+                <div class="listing-heading">
+                  <h4 class="text-primary">${{ listing.price | intcomma }} <span class="house-feats">{{ listing.bedrooms }} bds | {{ listing.bathrooms }} ba | {{ listing.sqft | intcomma }} sqft</span></h4>
+                  
                   <p>
-                    <i class="fas fa-map-marker text-secondary"></i> {{ listing.city }}, {{ listing.state }}, {{ listing.zipcode }}</p>
-                </div>
-                <hr>
-                <div class="row py-2 text-secondary">
-                  <div class="col-6">
-                    <i class="fas fa-th-large"></i> Sqft: {{ listing.sqft }}</div>
-                  <div class="col-6">
-                    <i class="fas fa-car"></i> Garage: {{ listing.garage }}</div>
-                </div>
-                <div class="row py-2 text-secondary">
-                  <div class="col-6">
-                    <i class="fas fa-bed"></i> Bedrooms: {{ listing.bedrooms }}</div>
-                  <div class="col-6">
-                    <i class="fas fa-bath"></i> Bathrooms: {{ listing.bathrooms }}</div>
-                </div>
-                <hr>
-                <div class="row py-2 text-secondary">
-                  <div class="col-12">
-                    <i class="fas fa-user"></i> {{ listing.realtor }}</div>
+                    <i class="fas text-secondary"></i>{{ listing.title }}, {{ listing.city }}, {{ listing.state }}, {{ listing.zipcode }}</p>
                 </div>
                 <div class="row text-secondary pb-2">
                   <div class="col-6">
@@ -175,9 +157,6 @@
   </div>
 </section>
 
-<script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfVzPqo4nZs&callback=initMap">
-</script>
 <script type="text/javascript">
   
   var map, geocoder, start_pos;
@@ -229,21 +208,22 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfV
           }, function(results, status) {
             if (status === 'OK') {
 
-              let k_price = "{{ listing.price }}";
+              var k_price = "{{ listing.price }}";
 
               k_price = String(Math.floor(parseInt(k_price) / 1000));
               
-              let contentString = `
-                <img class="info-image" src="{{ listing.photo_main.url }}" />
-                <span class="info-text">
-             
-                    $${k_price}k<br>
+              var contentString = `
+                <div>
+                  <img class="info-image" src="{{ listing.photo_main.url }}" />
+                  <div class="info-text">
+                    <b>$${k_price}k</b><br>
                     {{ listing.bedrooms }} bd, {{ listing.bathrooms }} br<br>
                     {{ listing.sqft | intcomma }} sqft
-             
-                </span>`;
+                  </div>
+                </div>
+                `;
 
-              let infoWindow = new google.maps.InfoWindow({
+              var infoWindow = new google.maps.InfoWindow({
                 content: contentString
               });
         
@@ -251,11 +231,13 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfV
                 map: map,
                 position: results[0].geometry.location,
                 icon: {
-                  url: 'https://img.icons8.com/color/13/000000/filled-circle.png',
-                  labelOrigin: new google.maps.Point(7,20),
+                  url: "{% static 'img/house-icon.png' %}",
+                  //labelOrigin: new google.maps.Point(7,20),
                 },
                 label: {
                   text: `$${k_price}k`,
+                  color: '#FFFFFF',
+                  fontSize: '12px'
                 }
               });
               marker.addListener('mouseover', function() {
