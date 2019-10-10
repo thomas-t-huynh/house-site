@@ -3127,8 +3127,7 @@ input[type="button"].btn-block {
   top: 0;
   right: 0;
   bottom: 0;
-  left: 0;
-  padding: 1.25rem; }
+  left: 0; }
 
 .card-img {
   width: 100%;
@@ -3136,6 +3135,7 @@ input[type="button"].btn-block {
 
 .card-img-top {
   width: 100%;
+  height: 225px;
   border-top-left-radius: calc( 0.25rem - 1px);
   border-top-right-radius: calc( 0.25rem - 1px); }
 
@@ -3346,7 +3346,7 @@ input[type="button"].btn-block {
 .badge {
   display: inline-block;
   padding: 0.25em 0.4em;
-  font-size: 75%;
+  font-size: 60%;
   font-weight: 700;
   line-height: 1;
   text-align: center;
@@ -3375,7 +3375,7 @@ input[type="button"].btn-block {
 
 .badge-secondary {
   color: #212529;
-  background-color: #30caa0; }
+  background: rgba(0,0,0,0.5); }
   .badge-secondary[href]:hover, .badge-secondary[href]:focus {
     color: #212529;
     text-decoration: none;
