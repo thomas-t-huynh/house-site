@@ -123,12 +123,12 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfV
 <!-- Listings -->
 <section id="listings" class="py-4">
   <div class="container">
-    <div class="row">
+    <div class="row search-list-scroll">
       <!-- Listing 1 -->
       {% if listings %}
         {% for listing in listings %}
-        
-          <div class="col-md-12 ">
+
+          <div class="col-md-12" >
             <a href="{% url 'listing' listing.id %}" >
               <div class="card listing-preview">
                 
@@ -138,21 +138,16 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfV
                       <span class="badge badge-secondary text-white">{{ listing.list_date | timesince }}</span>
                     </h2>
                   </div>
-                <div class="card-body">
+                <div class="card-body blue-bottom-border">
                   <div class="listing-heading">
                     <h4 class="text-primary">${{ listing.price | intcomma }} <span class="house-feats">{{ listing.bedrooms }} bds | {{ listing.bathrooms }} ba | {{ listing.sqft | intcomma }} sqft</span></h4>
-                    
-                    <p>
-                      <i class="fas text-secondary"></i>{{ listing.title }}, {{ listing.city }}, {{ listing.state }}, {{ listing.zipcode }}</p>
-                  </div>
-                  <div class="row text-secondary pb-2">
-         
+                    <p>{{ listing.title }}, {{ listing.city }}, {{ listing.state }}, {{ listing.zipcode }}</p>
                   </div>
                 </div>
               </div>
             </a>
           </div>
-  
+       
         {% endfor %}
         {% else %}
         <div class ="col-md-12">
@@ -171,126 +166,137 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfV
 
     geocoder = new google.maps.Geocoder();
 
-    var start_address = "{{ listings.0.title }} {{ listings.0.city }}, {{ listings.0.state }} {{ listings.0.zipcode }}"
+    var start_address = "{{ listings.0.title }} {{ listings.0.city }}, {{ listings.0.state }} {{ listings.0.zipcode }}";
 
-    geocoder.geocode({
-      'address': start_address
-    }, function(results, status) {
-      if (status === 'OK') {
-          start_pos =  results[0].geometry.location
-          map = new google.maps.Map(document.getElementById('map'), {
-            center: start_pos,
-            zoom: 9,
-            mapTypeControl: false
-          });
-
-          var styles = {
-            hide: [{
-              elementType: 'labels.icon',
-              stylers: [{
-                visibility: 'off'
+    function runMap(){ 
+      geocoder.geocode({
+        'address': start_address
+      }, function(results, status) {
+        if (status === 'OK') {
+            start_pos =  results[0].geometry.location
+            map = new google.maps.Map(document.getElementById('map'), {
+              center: start_pos,
+              zoom: 9,
+              mapTypeControl: false
+            });
+  
+            var styles = {
+              hide: [{
+                elementType: 'labels.icon',
+                stylers: [{
+                  visibility: 'off'
+                }]
+                
               }]
-              
-            }]
-          };
-        
-          map.setOptions({
-            styles: styles['hide']
-          });
-
-          /*var iconBox = {
-            path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
-            fillColor: 'green',
-            fillOpacity: 0.8,
-            scale: 1,
-            strokeColor: 'green',
-            strokeWeight: 14
-          }*/
-
-          {% for listing in listings %}
-          var address = "{{ listing.title }} {{ listing.city }}, {{ listing.state }} {{ listing.zipcode }}"
+            };
           
-          geocoder.geocode({
-            'address': address
-          }, function(results, status) {
-            if (status === 'OK') {
-
-              var k_price = "{{ listing.price }}";
-
-              k_price = String(Math.floor(parseInt(k_price) / 1000));
-              
-              var contentString = `
-                <div>
-                  <img class="info-image" src="{{ listing.photo_main.url }}" />
-                  <div class="info-text">
-                    <b>$${k_price}k</b><br>
-                    {{ listing.bedrooms }} bd, {{ listing.bathrooms }} br<br>
-                    {{ listing.sqft | intcomma }} sqft
+            map.setOptions({
+              styles: styles['hide']
+            });
+  
+            /*var iconBox = {
+              path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
+              fillColor: 'green',
+              fillOpacity: 0.8,
+              scale: 1,
+              strokeColor: 'green',
+              strokeWeight: 14
+            }*/
+            var limit = 50;
+            var count = 1;
+  
+            {% for listing in listings %}
+  
+            var address = "{{ listing.title }} {{ listing.city }}, {{ listing.state }} {{ listing.zipcode }}"
+  
+  
+            geocoder.geocode({
+              'address': address
+            }, function(results, status) {
+              if (status === 'OK' && count <= 50) {
+  
+                var k_price = "{{ listing.price }}";
+  
+                k_price = String(Math.floor(parseInt(k_price) / 1000));
+                
+                var contentString = `
+                  <div>
+                    <img class="info-image" src="{{ listing.photo_main.url }}" />
+                    <div class="info-text">
+                      <b>$${k_price}k</b><br>
+                      {{ listing.bedrooms }} bd, {{ listing.bathrooms }} br<br>
+                      {{ listing.sqft | intcomma }} sqft
+                    </div>
                   </div>
-                </div>
-                `;
-
-              var infoWindow = new google.maps.InfoWindow({
-                content: contentString
-              });
-        
-              var marker = new google.maps.Marker({
-                map: map,
-                position: results[0].geometry.location,
-                icon: {
-                  url: "{% static 'img/house-icon.png' %}",
-                  //labelOrigin: new google.maps.Point(7,20),
-                },
-                label: {
-                  text: `$${k_price}k`,
-                  color: '#FFFFFF',
-                  fontSize: '12px'
-                }
-              });
-              marker.addListener('mouseover', function() {
-                infoWindow.open(map, marker);
-                marker.addListener('mouseout', function() {
-                  infoWindow.close(map, marker);
+                  `;
+  
+                var infoWindow = new google.maps.InfoWindow({
+                  content: contentString
                 });
-              });
-
-              marker.addListener('click', function() {
-                window.location.href = "{% url 'listing' listing.id %}"
-              });
-              
-            } else {
-              alert('Geocode was not successful for the following reason: ' + status);
-            }
-          });
-          {% endfor %}
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-      }
-    });
+          
+                var marker = new google.maps.Marker({
+                  map: map,
+                  position: results[0].geometry.location,
+                  icon: {
+                    url: "{% static 'img/house-icon.png' %}",
+                    //labelOrigin: new google.maps.Point(7,20),
+                  },
+                  label: {
+                    text: `$${k_price}k`,
+                    color: '#FFFFFF',
+                    fontSize: '12px'
+                  }
+                });
+                marker.addListener('mouseover', function() {
+                  infoWindow.open(map, marker);
+                  marker.addListener('mouseout', function() {
+                    infoWindow.close(map, marker);
+                  });
+                });
+  
+                marker.addListener('click', function() {
+                  window.location.href = "{% url 'listing' listing.id %}"
+                });
+                count = count + 1;
+                              
+              }            
+            });
+            {% endfor %}
+            //map.addListener('dragend', function() {
+            //  runMap(map.getCenter())
+            // })
+  
+            
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      });
+    }
+    runMap()
 
 }
-  
-  document.getElementById('search').addEventListener('click', function() {
-    geocodeAddress(geocoder, map);
+
+//document.getElementById('search').addEventListener('click', function() {
+//  geocodeAddress(geocoder, map);
+//});
+
+
+function geocodeAddress(geocoder, resultsMap) {
+  var address = document.getElementById('search_bar').value;
+  geocoder.geocode({
+    'address': address
+  }, function(results, status) {
+    if (status === 'OK') {
+      resultsMap.setCenter(results[0].geometry.location);
+      var marker = new google.maps.Marker({
+        map: resultsMap,
+        position: results[0].geometry.location
+      });
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
+    }
   });
-  
-  
-  function geocodeAddress(geocoder, resultsMap) {
-    var address = document.getElementById('search_bar').value;
-    geocoder.geocode({
-      'address': address
-    }, function(results, status) {
-      if (status === 'OK') {
-        resultsMap.setCenter(results[0].geometry.location);
-        var marker = new google.maps.Marker({
-          map: resultsMap,
-          position: results[0].geometry.location
-        });
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-      }
-    });
-  }
+}
 </script>
 {% endblock %}
 

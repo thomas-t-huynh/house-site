@@ -1,4 +1,11 @@
 
+.blue-bottom-border {
+  border-color: blue;
+  border-style:solid;
+  border-width: 0px 0px 4px 0px;
+  
+}
+
 .btn-secondary {
   color: #fff !important }
 
@@ -43,7 +50,10 @@ img {
   opacity: 0.9;
   text-transform: uppercase; }
 
-
+.search-list-scroll {
+  overflow: auto;
+  height: 500px;;
+}
 .social a {
   margin-right: 0.4rem; }
 
