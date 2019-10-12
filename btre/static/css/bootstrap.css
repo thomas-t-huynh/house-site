@@ -1648,12 +1648,12 @@ fieldset:disabled a.btn {
 
 .btn-secondary {
   color: #212529;
-  background-color: #30caa0;
-  border-color: #30caa0; }
+  background-color: #036bfc;
+  border-color: #036bfc; }
   .btn-secondary:hover {
     color: #fff;
-    background-color: #29ab88;
-    border-color: #26a17f; }
+    background-color: #fc0202;
+    border-color: #fc0202; }
   .btn-secondary:focus, .btn-secondary.focus {
     box-shadow: 0 0 0 0.2rem rgba(48, 202, 160, 0.5); }
   .btn-secondary.disabled, .btn-secondary:disabled {
@@ -1663,11 +1663,11 @@ fieldset:disabled a.btn {
   .btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active,
   .show > .btn-secondary.dropdown-toggle {
     color: #fff;
-    background-color: #26a17f;
-    border-color: #249677; }
+    background-color: #880101;
+    border-color: #880101; }
     .btn-secondary:not(:disabled):not(.disabled):active:focus, .btn-secondary:not(:disabled):not(.disabled).active:focus,
     .show > .btn-secondary.dropdown-toggle:focus {
-      box-shadow: 0 0 0 0.2rem rgba(48, 202, 160, 0.5); }
+      box-shadow: 0 0 0 0.2rem rgba(153, 6, 6, 0.5); }
 
 .btn-success {
   color: #fff;
@@ -3131,6 +3131,7 @@ input[type="button"].btn-block {
 
 .card-img {
   width: 100%;
+  
   border-radius: calc( 0.25rem - 1px); }
 
 .card-img-top {
@@ -4278,7 +4279,7 @@ button.close {
   vertical-align: text-top !important; }
 
 .bg-primary {
-  background-color: #10284e !important; }
+  background-color: #34a8eb !important; }
 
 a.bg-primary:hover, a.bg-primary:focus,
 button.bg-primary:hover,
@@ -4424,7 +4425,8 @@ button.bg-dark:focus {
   border-bottom-left-radius: 0.25rem !important; }
 
 .rounded-circle {
-  border-radius: 50% !important; }
+  border-radius: 50% !important;
+  height: 350px; }
 
 .rounded-0 {
   border-radius: 0 !important; }
@@ -6188,7 +6190,7 @@ a.text-primary:hover, a.text-primary:focus {
   color: #071224 !important; }
 
 .text-secondary {
-  color: #30caa0 !important; }
+  color: #036bfc !important; }
 
 a.text-secondary:hover, a.text-secondary:focus {
   color: #26a17f !important; }
