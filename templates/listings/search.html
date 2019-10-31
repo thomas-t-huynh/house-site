@@ -128,7 +128,7 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfV
       {% if listings %}
         {% for listing in listings %}
 
-          <div class="col-md-12" >
+          <div class="col-md-12" id="{{ listing.id }}" >
             <a href="{% url 'listing' listing.id %}" >
               <div class="card listing-preview">
                 
@@ -247,12 +247,21 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfV
                     fontSize: '12px'
                   }
                 });
+
                 marker.addListener('mouseover', function() {
                   infoWindow.open(map, marker);
                   marker.addListener('mouseout', function() {
                     infoWindow.close(map, marker);
                   });
                 });
+
+                var houseId = document.getElementById('{{ listing.id }}');
+                houseId.addEventListener('mouseover', function() {
+                  infoWindow.open(map, marker);
+                  houseId.addEventListener('mouseout', function() {
+                    infoWindow.close(map, marker);
+                  })
+                })
   
                 marker.addListener('click', function() {
                   window.location.href = "{% url 'listing' listing.id %}"
