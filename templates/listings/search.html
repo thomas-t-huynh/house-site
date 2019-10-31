@@ -244,22 +244,26 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeIhK0QtZ--Y6VF8XmnSrLfV
                   label: {
                     text: `$${k_price}k`,
                     color: '#FFFFFF',
-                    fontSize: '12px'
+                    fontSize: '10px'
                   }
                 });
 
                 marker.addListener('mouseover', function() {
                   infoWindow.open(map, marker);
+                  marker.setIcon("{% static 'img/house-icon-h.png' %}")
                   marker.addListener('mouseout', function() {
                     infoWindow.close(map, marker);
+                    marker.setIcon("{% static 'img/house-icon.png' %}")
                   });
                 });
 
                 var houseId = document.getElementById('{{ listing.id }}');
                 houseId.addEventListener('mouseover', function() {
                   infoWindow.open(map, marker);
+                  marker.setIcon("{% static 'img/house-icon-h.png' %}")
                   houseId.addEventListener('mouseout', function() {
                     infoWindow.close(map, marker);
+                    marker.setIcon("{% static 'img/house-icon.png' %}")
                   })
                 })
   
