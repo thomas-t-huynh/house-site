@@ -129,6 +129,7 @@ USE_TZ = True
 #connects any folder w/ name 'static' and then connects them to the root static directory.
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+
 STATIC_URL = '/static/'
 
 #sets the directory
