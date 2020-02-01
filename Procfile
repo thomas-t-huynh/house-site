@@ -1,1 +1,1 @@
-web: gunicorn blue-fin.wsgi
+web: gunicorn btre.wsgi
