@@ -1,1 +1,1 @@
-web: waitress-serve --port=*:8000 btre.wsgi:application
+web: waitress-serve --port=:8000 --url-scheme=https btre:wsgifunc
